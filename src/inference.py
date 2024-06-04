@@ -4,9 +4,9 @@ import torch.nn.functional as F
 import os
 
 
-class NetM3(nn.Module):
+class NetM5(nn.Module):
     def __init__(self):
-        super(NetM3, self).__init__()
+        super(NetM5, self).__init__()
         self.conv1 = nn.Conv1d(1, 128, 80, 4)
         self.bn1 = nn.BatchNorm1d(128)
         self.pool1 = nn.MaxPool1d(4)
@@ -43,7 +43,7 @@ class NetM3(nn.Module):
 
 def model_fn(model_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = NetM3()
+    model = NetM5()
     if torch.cuda.device_count() > 1:
         print("Gpu count: {}".format(torch.cuda.device_count()))
         model = nn.DataParallel(model)
