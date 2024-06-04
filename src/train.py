@@ -86,9 +86,9 @@ class UrbanSoundDataset(Dataset):
         return len(self.file_names)
 
 
-class NetM3(nn.Module):
+class NetM5(nn.Module):
     def __init__(self):
-        super(NetM3, self).__init__()
+        super(NetM5, self).__init__()
         self.conv1 = nn.Conv1d(1, 128, 80, 4)
         self.bn1 = nn.BatchNorm1d(128)
         self.pool1 = nn.MaxPool1d(4)
@@ -166,7 +166,7 @@ def test(model, test_loader, device):
 
 def model_fn(model_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = NetM3()
+    model = NetM5()
     if torch.cuda.device_count() > 1:
         print("Gpu count: {}".format(torch.cuda.device_count()))
         model = nn.DataParallel(model)
@@ -193,7 +193,7 @@ def main():
     parser.add_argument("--gamma", type=float, default=0.1, help="Learning rate step gamma")
     parser.add_argument("--weight-decay", type=float, default=0.0001, help="Optimizer regularization")
     parser.add_argument("--stepsize", type=int, default=5, help="Step LR size")
-    parser.add_argument("--model", type=str, default="m3")
+    parser.add_argument("--model", type=str, default="M5")
     parser.add_argument("--num-workers", type=int, default=30)
     parser.add_argument("--seed", type=int, default=1, help="seed")
     parser.add_argument("--log-interval", type=int, default=10)
@@ -254,10 +254,10 @@ def main():
         test_loader = torch.utils.data.DataLoader(test_set, batch_size=args.test_batch_size, shuffle=True, **kwargs)
 
         print("Loading model:", args.model)
-        if args.model == "m3":
-            model = NetM3()
+        if args.model == "M5":
+            model = NetM5()
         else:
-            model = NetM3()
+            model = NetM5()
 
         if torch.cuda.device_count() > 1:
             print("There are {} gpus".format(torch.cuda.device_count()))
